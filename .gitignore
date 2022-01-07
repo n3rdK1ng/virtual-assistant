@@ -132,4 +132,5 @@ dmypy.json
 credentials.json
 token.json
 login.json
+shifts.json
 test.py
