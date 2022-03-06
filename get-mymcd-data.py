@@ -26,7 +26,7 @@ f = open('login.json')
 login = json.load(f)
 f.close
 
-# Set path for Selenium
+# Selenium Set-Up
 CHROMIUM_PATH = '/bin/chromium-browser'
 s = Service(CHROMIUM_PATH)
 driver = webdriver.Chrome()
@@ -34,7 +34,9 @@ driver = webdriver.Chrome()
 # Function that simplifies the getting shifts data function
 def gettingTableData(starting_day, ammount_of_days):
 
-    for i in range(starting_day + 1, ammount_of_days):
+    time.sleep(10)
+
+    for i in range(starting_day + 1, starting_day + ammount_of_days + 2):
 
             shift = {
                 'day': i - 1,
@@ -58,8 +60,7 @@ def gettingTheMonthlyData(days_in_the_month, day):
 
         gettingTableData(day, days_left_in_month)
         driver.get("https://mymcd.eu/app/CZ019/#/shifts/{0}-{1}/".format(year, month + 1))
-        time.sleep(1)
-        gettingTableData(day, days_left_in_month)
+        gettingTableData(1, days_left - 1)
 
     with open('shifts.json', 'w', encoding='utf-8') as f:
         json.dump(shifts, f, ensure_ascii=False, indent=4)
@@ -72,6 +73,5 @@ driver.find_element(By.XPATH, '/html/body/div[1]/form/div[2]/input[2]').click()
 
 # Getting the shifts data
 driver.get("https://mymcd.eu/app/CZ019/#/shifts/")
-time.sleep(10)
 gettingTheMonthlyData(actual_month_days, day)
 driver.close()
