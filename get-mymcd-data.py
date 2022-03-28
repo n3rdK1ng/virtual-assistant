@@ -27,9 +27,11 @@ login = json.load(f)
 f.close
 
 # Selenium Set-Up
-CHROMIUM_PATH = '/bin/chromium-browser'
-s = Service(CHROMIUM_PATH)
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument("--start-maximized")
+options.add_argument('--log-level=3')
+driver = webdriver.Chrome(executable_path="chromedriver", chrome_options=options)
+driver.set_window_size(1920,1080)
 
 # Function that simplifies the getting shifts data function
 def gettingTableData(starting_day, ammount_of_days):
@@ -74,4 +76,4 @@ driver.find_element(By.XPATH, '/html/body/div[1]/form/div[2]/input[2]').click()
 # Getting the shifts data
 driver.get("https://mymcd.eu/app/CZ019/#/shifts/")
 gettingTheMonthlyData(actual_month_days, day)
-driver.close()
+driver.quit()
