@@ -45,3 +45,5 @@ Dále pracuji na tom, aby celý tento system byl plně automatizovaný a fungova
 - automatizace log in - 2 h
 
 - automatizace získávání dat z pracovní stránky - 3 h
+
+- vytvoření eventu pomocí Google Calendar API - 0.5 h
