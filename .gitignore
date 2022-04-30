@@ -134,3 +134,4 @@ token.json
 login.json
 shifts.json
 test.py
+.DS_Store
