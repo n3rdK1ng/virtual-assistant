@@ -34,17 +34,37 @@ driver = webdriver.Chrome(executable_path="chromedriver", chrome_options=options
 driver.set_window_size(1920,1080)
 
 # Function that simplifies the getting shifts data function
-def gettingTableData(starting_day, ammount_of_days):
+def gettingTableData(starting_day, ammount_of_days, month, year):
 
     time.sleep(10)
 
     for i in range(starting_day + 1, starting_day + ammount_of_days + 2):
+        
+        if (driver.find_element(By.XPATH, table_item_xpath.format(i, 1)).text and driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text) != None:
+            
+            gday = i - 1
+            start = driver.find_element(By.XPATH, table_item_xpath.format(i, 1)).text
+            end = driver.find_element(By.XPATH, table_item_xpath.format(i, 2)).text
+            note = driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text
 
             shift = {
-                'day': i - 1,
-                'start': driver.find_element(By.XPATH, table_item_xpath.format(i, 1)).text,
-                'end': driver.find_element(By.XPATH, table_item_xpath.format(i, 2)).text,
-                'note': driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text
+                'summary': 'Směna',
+                'location': 'Francouzská 5, 708 00 Ostrava-Poruba',
+                'description': note,
+                'start': {
+                    'dateTime': f'{year}-{month}-{gday}T{start[:-2]}:{start[-2:]}:00+02:00',
+                    'timeZone': 'Europe/Prague',
+                },
+                'end': {
+                    'dateTime': f'{year}-{month}-{gday}T{end[:-2]}:{end[-2:]}:00+02:00',
+                    'timeZone': 'Europe/Prague',
+                },
+                'reminders': {
+                    'useDefault': bool(False),
+                    'overrides': [
+                        {'method': 'popup', 'minutes': 60},
+                    ],
+                },                
             }
             shifts.append(shift)
 
@@ -60,9 +80,13 @@ def gettingTheMonthlyData(days_in_the_month, day):
         days_left_in_month = days_in_the_month - day
         days_left = shifts_planned_upwards - days_left_in_month
 
-        gettingTableData(day, days_left_in_month)
+        gettingTableData(day, days_left_in_month, month, year)
         driver.get("https://mymcd.eu/app/CZ019/#/shifts/{0}-{1}/".format(year, month + 1))
-        gettingTableData(1, days_left - 1)
+
+        if month + 1 == 13:
+            gettingTableData(1, days_left - 1, 1, year + 1)
+        else:
+            gettingTableData(1, days_left - 1, month + 1, year)
 
     with open('shifts.json', 'w', encoding='utf-8') as f:
         json.dump(shifts, f, ensure_ascii=False, indent=4)
