@@ -39,24 +39,34 @@ def gettingTableData(starting_day, ammount_of_days, month, year):
     time.sleep(10)
 
     for i in range(starting_day + 1, starting_day + ammount_of_days + 2):
+          
+        gday = i - 1
+        start = driver.find_element(By.XPATH, table_item_xpath.format(i, 1)).text
+        startx = start[:-3]
+        starty = start[-2:]
+        end = driver.find_element(By.XPATH, table_item_xpath.format(i, 2)).text
+        endx = end[:-3]
+        endy = end[-2:]
+        note = driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text
         
-        if (driver.find_element(By.XPATH, table_item_xpath.format(i, 1)).text and driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text) != None:
-            
-            gday = i - 1
-            start = driver.find_element(By.XPATH, table_item_xpath.format(i, 1)).text
-            end = driver.find_element(By.XPATH, table_item_xpath.format(i, 2)).text
-            note = driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text
+        # In case there's a nightshift
+        if startx > endx:
+            night = 1
+        else:
+            night = 0
+
+        if start != "":
 
             shift = {
-                'summary': 'Směna',
+                'summary': 'Work',
                 'location': 'Francouzská 5, 708 00 Ostrava-Poruba',
                 'description': note,
                 'start': {
-                    'dateTime': f'{year}-{month}-{gday}T{start[:-2]}:{start[-2:]}:00+02:00',
+                    'dateTime': f'{year}-{month}-{gday}T{startx}:{starty}:00+02:00',
                     'timeZone': 'Europe/Prague',
                 },
                 'end': {
-                    'dateTime': f'{year}-{month}-{gday}T{end[:-2]}:{end[-2:]}:00+02:00',
+                    'dateTime': f'{year}-{month}-{gday + night}T{endx}:{endy}:00+02:00',
                     'timeZone': 'Europe/Prague',
                 },
                 'reminders': {
@@ -73,7 +83,7 @@ def gettingTheMonthlyData(days_in_the_month, day):
     
     if days_in_the_month - day >= shifts_planned_upwards:
 
-        gettingTableData(day, shifts_planned_upwards)
+        gettingTableData(day, shifts_planned_upwards, month, year)
 
     else:
 
