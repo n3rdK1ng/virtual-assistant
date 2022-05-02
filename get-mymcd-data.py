@@ -50,10 +50,13 @@ def gettingTableData(starting_day, ammount_of_days, month, year):
         note = driver.find_element(By.XPATH, table_item_xpath.format(i, 3)).text
         
         # In case there's a nightshift
-        if startx > endx:
-            night = 1
-        else:
-            night = 0
+        try:
+            if int(startx) > int(endx):
+                night = 1
+            else:
+                night = 0
+        except:
+            pass
 
         if start != "":
 
