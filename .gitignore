@@ -132,6 +132,8 @@ dmypy.json
 credentials.json
 token.json
 login.json
+login-baka.json
 shifts.json
+quickstart.py
 test.py
 .DS_Store
