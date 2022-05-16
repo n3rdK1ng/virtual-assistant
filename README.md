@@ -7,7 +7,7 @@ Jedná se o můj osobní seminární projekt, který má za cíl vytvořit virtu
 
 Využívám k tomu hlavně jazyk Python za účelem práce s APIs a webscrapingu v případech, kdy API není dostupné. Snažím se tedy o získání dat různě ze stránek školy či práce, která následně přidávám do Google kalendáře, který mi napomáhá s udržením všech dat na jednom místě na všech zařízeních. Případně jsem přemýšlel o vytvoření vlastní aplikace, ale aktuálně to není můj hlavní cíl.
 
-Dále pracuji na tom, aby celý tento system byl plně automatizovaný a fungoval tak naprosto bnez jakéhokoli zásahu z mé strany. Proto je jedním z mých dalších cílů, aby tento projekt neustále běžel na serveru. 
+Dále pracuji na tom, aby celý tento system byl plně automatizovaný a fungoval tak naprosto bez jakéhokoli zásahu z mé strany. Proto je jedním z mých dalších cílů, aby tento projekt neustále běžel na serveru. 
 
 
 ## Nástroje
@@ -32,8 +32,6 @@ Dále pracuji na tom, aby celý tento system byl plně automatizovaný a fungova
 - vložení dat do Google kalendáře
 
 - automatizace celého projektu na serveru
-
-- jednoduché přidání souborů dat kdykoli a kdekoli mimo dané stránky
 
 - aplikace nahrazující Google kalendář *
 
