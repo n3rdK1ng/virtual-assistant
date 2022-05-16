@@ -44,4 +44,4 @@ Dále pracuji na tom, aby celý tento system byl plně automatizovaný a fungova
 
 - automatizace získávání dat z pracovní stránky - 3 h
 
-- vytvoření eventu pomocí Google Calendar API - 0.5 h
+- vytvoření eventu pomocí Google Calendar API - 2 h
