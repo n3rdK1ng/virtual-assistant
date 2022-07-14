@@ -2,7 +2,7 @@ import json
 import time
 import datetime
 
-from calendar import monthrange
+from calendar import month, monthrange
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -111,6 +111,7 @@ driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(login[1])
 driver.find_element(By.XPATH, '/html/body/div[1]/form/div[2]/input[2]').click()
 
 # Getting the shifts data
-driver.get("https://mymcd.eu/app/CZ019/#/shifts/")
+#driver.get("https://mymcd.eu/app/CZ019/#/shifts/")
+driver.get("https://mymcd.eu/app/CZ019/#/shifts/{0}-{1}/".format(year, month))
 gettingTheMonthlyData(actual_month_days, day)
 driver.quit()

@@ -39,6 +39,7 @@ def main():
             token.write(creds.to_json())
 
     try:
+
         service = build('calendar', 'v3', credentials=creds)
 
         # Create event
@@ -63,9 +64,41 @@ def main():
             },
         }"""
 
-        for event in shifts:
-            event = service.events().insert(calendarId='primary', body=event).execute()
-            print('Event created: %s' % (event.get('htmlLink')))
+        for shift in shifts:
+
+            now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+            duplicateEvents = True
+
+            while duplicateEvents == True:
+
+                events_result = service.events().list(calendarId='primary', timeMin=now,
+                                                    maxResults=1, singleEvents=True,
+                                                    orderBy='startTime').execute()
+                events = events_result.get('items', [])
+
+                if not events:
+                    print('No upcoming events found.')
+                    return
+
+                event = events[0]
+                eventID = event['id']
+                eventSummary = event['summary']
+                eventStart = event['start'].get('dateTime', event['start'].get('date'))
+                eventDate = eventStart[5:10]
+                
+                #shift = service.events().insert(calendarId='primary', body=event).execute()
+                #print('Event created: %s' % (shift.get('htmlLink')))
+                shiftStart = shift['start'].get('dateTime', shift['start'].get('date'))
+                shiftDate = shiftStart[5:10]
+                shiftSummary = shift['summary']
+
+                if (eventSummary == shiftSummary) and (eventDate == shiftDate):
+                    service.events().delete(calendarId='primary', eventId=eventID).execute()
+                    print('Duplicate event deleted.')
+                else:
+                    duplicateEvents = False
+                    shift = service.events().insert(calendarId='primary', body=event).execute()
+                    print('Event created: %s' % (shift.get('htmlLink')))
 
     except HttpError as error:
         print('An error occurred: %s' % error)
